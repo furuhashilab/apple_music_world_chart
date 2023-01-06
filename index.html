@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Spotify world chart Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css"
+rel="stylesheet"
+/>
+<style>
+body {
+margin: 0;
+padding: 0;
+}
+h2,
+h3 {
+margin: 10px;
+font-size: 18px;
+color: aliceblue;
+text-align: center;
+}
+h3 {
+font-size: 16px;
+}
+p {
+margin: 10px;
+color: aliceblue;
+text-align: center;
+}
+.map-overlay {
+position: absolute;
+bottom: 0;
+right: 0;
+background: rgb(56, 56, 56);
+margin-right: 20px;
+font-family: Arial, sans-serif;
+overflow: auto;
+border-radius: 3px;
+}
+#map {
+position: absolute;
+top: 0;
+bottom: 0;
+width: 100%;
+}
+#features {
+top: 0;
+height: 510px;
+margin-top: 20px;
+width: 350px;
+}
+@media(max-width: 600px) {
+  html {
+    font-size: 87.5%;
+  }
+
+  
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div class="map-overlay" id="features">
+<h2>Apple Music World Chart TOP50</h2>
+<div id="pd"><p>Click a your Country!</p></div>
+</div>
+<div class="map-overlay" id="legend"></div>
+ 
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiZjFrdW5pIiwiYSI6ImNrdzJ4ZWhtNDBwaXAzMW1veXN5cGYwM2EifQ.-NTeimXFcbrFi2g5ZHDgjA';
+const map = new mapboxgl.Map({
+container: 'map',
+style: 'mapbox://styles/f1kuni/clcka0xt700n514ox99d00lj2',
+zoom: 1.5,
+center: [30, 50],
+projection: 'globe'
+});
+ 
+map.on('load', () => {
+// Set the default atmosphere style
+map.setFog({});
+map.getCanvas().style.cursor = 'default';
+ 
+map.fitBounds([
+[-133.2421875, 16.972741],
+[-47.63671875, 52.696361]
+]);
+ 
+map.on('click', (event) => {
+const states = map.queryRenderedFeatures(event.point, {
+layers: ['apple-music-dafd0v']
+});
+document.getElementById('pd').innerHTML = states.length
+? `<p><strong><em>${states[0].properties.apple}</strong> </em></p>`
+: `<p>Click a Country!</p>`;
+});
+});
+
+</script>
+</body>
+</html>
